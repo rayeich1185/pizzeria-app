@@ -1,15 +1,14 @@
 package com.pizzeria.userservice.services;
 
-import com.pizzeria.userservice.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.pizzeria.userservice.repositories.UserRepository;
 
-import java.util.Collections;
+import com.pizzeria.userservice.entities.User;
+import com.pizzeria.userservice.repositories.UserRepository;
+import com.pizzeria.userservice.utils.configs.UserPrincipal;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -22,8 +21,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getUserRole().name())));
+        return UserPrincipal.create(user);
     }
 }

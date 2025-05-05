@@ -1,0 +1,5 @@
+package com.pizzeria.userservice.utils.jwt;
+
+//TODO: implement
+public class JwtAuthenticationEntryPoint {
+}
