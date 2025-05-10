@@ -13,11 +13,9 @@ import java.util.Map;
 @Service
 public class OrderManager {
     private final Map<Long, Order> orders = new HashMap<>();
-    private Long nextOrderId = 1L;
 
     public Order createOrder(UserDTO userdto){
         Order order = new Order();
-        order.setId(nextOrderId++);
         order.setUserId(userdto.getId());
         order.setOrderTime(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.PENDING);
